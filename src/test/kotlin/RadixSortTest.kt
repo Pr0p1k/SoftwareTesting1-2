@@ -34,14 +34,21 @@ class RadixSortTest {
     }
 
     @Test
-    fun testCornerCases() {
+    fun testEmptyCollection() {
         val empty = emptyList<Int>()
         assertEquals(empty, empty.radixSorted(), "Empty list test has failed.")
         assertEquals(consoleWriter.buffer.toString(), "", "Empty list test produced something in log.")
+    }
+
+    @Test
+    fun testSingleton() {
         val singleton = listOf(1)
         assertEquals(singleton, singleton.radixSorted(), "Singleton list test has failed.")
         assertEquals(consoleWriter.buffer.toString(), "", "Singleton list test produced something in log.")
+    }
 
+    @Test
+    fun testAllZeros() {
         val zerosList = listOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         assertEquals(zerosList, zerosList.radixSorted(), "Zeros list test has failed.")
         assertEquals(
@@ -50,15 +57,26 @@ class RadixSortTest {
             INFO - After step 1 out of 1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             INFO - Radix sort has finished.
 
-        """.trimIndent(), consoleWriter.buffer.toString()
-        , "Zeros list test log differs.")
+        """.trimIndent(), consoleWriter.buffer.toString(), "Zeros list test log differs."
+        )
+    }
+
+    @Test
+    fun testSequentialList() {
         val seqList = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
         assertEquals(seqList, seqList.radixSorted(), "Sequential list test has failed.")
+    }
+
+    @Test
+    fun testMutableListSort() {
         val justAList = listOf(13, 42, 228, 322, 1337, 1488, 1941 - 1945, 1814 - 1841, 1979 - 1989)
         val justAMutableList = justAList.toMutableList()
         justAMutableList.radixSort()
         assertNotEquals(justAList, justAMutableList, "Mutable sort test has failed.")
+    }
 
+    @Test
+    fun testSetSort() {
         val justASet = mutableSetOf(124, 43, 6875, 643, 1, 64, 4, 75, 32, 765, 84)
         justASet.radixSort()
         assertEquals(setOf(1, 4, 32, 43, 64, 75, 84, 124, 643, 765, 6875), justASet, "Set sort test has failed.")
